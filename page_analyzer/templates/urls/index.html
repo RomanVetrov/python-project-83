@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}Сайты{% endblock %}
+
+{% block content %}
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Сайты</h1>
+    <a class="btn btn-primary" href="{{ url_for('index') }}">Добавить</a>
+  </div>
+
+  {% if urls %}
+    <table class="table table-striped" data-test="urls">
+      <thead>
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">Имя</th>
+          <th scope="col">Дата создания</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for url in urls %}
+          <tr>
+            <td>{{ url.id }}</td>
+            <td>
+              <a href="{{ url_for('url_show', url_id=url.id) }}">{{ url.name }}</a>
+            </td>
+            <td>{{ url.created_at.strftime("%Y-%m-%d %H:%M:%S") }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p class="text-muted">Сайтов пока нет.</p>
+  {% endif %}
+{% endblock %}
+

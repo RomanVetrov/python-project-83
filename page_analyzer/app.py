@@ -44,7 +44,8 @@ def url_show(url_id: int):
         app.logger.warning("URL не найден id=%s", url_id)
         abort(404)
 
-    return render_template("urls/show.html", url=url)
+    checks = db.fetch_checks(url_id)
+    return render_template("urls/show.html", url=url, checks=checks)
 
 
 @app.post("/urls")
@@ -83,4 +84,24 @@ def urls_create():
 
     app.logger.info("URL успешно добавлен id=%s", url_id)
     flash("Страница успешно добавлена", "success")
+    return redirect(url_for("url_show", url_id=url_id))
+
+
+@app.post("/urls/<int:url_id>/checks")
+def url_checks_create(url_id: int):
+    app.logger.info("Создаём проверку для URL id=%s", url_id)
+    url = db.find_url_by_id(url_id)
+
+    if url is None:
+        app.logger.warning("Нельзя создать проверку: URL не найден id=%s", url_id)
+        abort(404)
+
+    try:
+        db.create_check(url_id)
+    except Exception:
+        app.logger.exception("Не удалось создать проверку для URL id=%s", url_id)
+        flash("Не удалось выполнить проверку", "danger")
+        return redirect(url_for("url_show", url_id=url_id))
+
+    flash("Проверка успешно добавлена", "success")
     return redirect(url_for("url_show", url_id=url_id))

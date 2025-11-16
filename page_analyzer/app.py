@@ -16,7 +16,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 from . import db  # noqa: E402
-from .services import normalize_url  # noqa: E402
+from .services import normalize_url, is_valid_url  # noqa: E402
 
 logging.basicConfig(level=logging.INFO)
 
@@ -66,6 +66,10 @@ def urls_create():
     app.logger.info("Результат нормализации='%s'", normalized)
 
     if not normalized:
+        flash("Некорректный URL", "danger")
+        return redirect(url_for("index"))
+
+    if not is_valid_url(normalized):
         flash("Некорректный URL", "danger")
         return redirect(url_for("index"))
 

@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from urllib.parse import urlparse
 
+from validators import url as validate_url
+
 
 def normalize_url(raw_url: str) -> str | None:
     """Нормализует URL, оставляя только схему и домен."""
@@ -14,3 +16,8 @@ def normalize_url(raw_url: str) -> str | None:
         return f"{parsed.scheme}://{parsed.netloc}"
     except Exception:
         return None
+
+
+def is_valid_url(raw_url: str) -> bool:
+    """Проверяет URL с помощью библиотеки validators."""
+    return bool(validate_url(raw_url))

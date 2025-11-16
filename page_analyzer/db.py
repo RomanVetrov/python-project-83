@@ -31,19 +31,15 @@ def fetch_urls():
         with conn.cursor(cursor_factory=DictCursor) as cursor:
             cursor.execute(
                 """
-                SELECT
+                SELECT DISTINCT ON (urls.id)
                     urls.id,
                     urls.name,
                     urls.created_at,
-                    (
-                        SELECT created_at
-                        FROM url_checks
-                        WHERE url_id = urls.id
-                        ORDER BY id DESC
-                        LIMIT 1
-                    ) AS last_check
+                    url_checks.created_at AS last_check,
+                    url_checks.status_code AS last_status
                 FROM urls
-                ORDER BY id DESC;
+                LEFT JOIN url_checks ON url_checks.url_id = urls.id
+                ORDER BY urls.id DESC, url_checks.id DESC;
                 """
             )
             return cursor.fetchall()
@@ -96,17 +92,17 @@ def create_url(name: str) -> int:
             return new_id
 
 
-def create_check(url_id: int) -> int:
+def create_check(url_id: int, status_code: int) -> int:
     logger.info("Создаём проверку для url_id=%s", url_id)
     with get_connection() as conn:
         with conn.cursor() as cursor:
             cursor.execute(
                 """
-                INSERT INTO url_checks (url_id)
-                VALUES (%s)
+                INSERT INTO url_checks (url_id, status_code)
+                VALUES (%s, %s)
                 RETURNING id
                 """,
-                (url_id,),
+                (url_id, status_code),
             )
             check_id = cursor.fetchone()[0]
             conn.commit()
@@ -127,4 +123,3 @@ def fetch_checks(url_id: int):
                 (url_id,),
             )
             return cursor.fetchall()
-

@@ -1,5 +1,6 @@
 import logging
 import os
+import requests
 
 from flask import (
     Flask,
@@ -90,17 +91,31 @@ def urls_create():
 @app.post("/urls/<int:url_id>/checks")
 def url_checks_create(url_id: int):
     app.logger.info("Создаём проверку для URL id=%s", url_id)
-    url = db.find_url_by_id(url_id)
+    url = db.find_url_by_id(url_id) # данные ссылки вида {"value": "value"}
 
     if url is None:
         app.logger.warning("Нельзя создать проверку: URL не найден id=%s", url_id)
         abort(404)
 
+    url_name = url["name"]# достал ссылку
+
     try:
-        db.create_check(url_id)
+        response = requests.get(url_name)# достал объект Response
+        response.raise_for_status()# ловим 4хх-5хх ошибки
+    except requests.RequestException:
+        app.logger.exception("Не удалось выполнить запрос к URL id=%s", url_id)
+        flash("Произошла ошибка при проверке", "danger")
+        return redirect(url_for("url_show", url_id=url_id))
+
+    status_code = response.status_code # достаем HTTP-Code ответа
+
+    try:
+        db.create_check(url_id, status_code)
     except Exception:
-        app.logger.exception("Не удалось создать проверку для URL id=%s", url_id)
-        flash("Не удалось выполнить проверку", "danger")
+        app.logger.exception(
+            "Не удалось сохранить результат проверки URL id=%s", url_id
+            )
+        flash("Не удалось сохранить проверку", "danger")
         return redirect(url_for("url_show", url_id=url_id))
 
     flash("Проверка успешно добавлена", "success")

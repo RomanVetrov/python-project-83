@@ -26,11 +26,13 @@ app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
 
 @app.route("/", methods=["GET"])
 def index():
+    """Выводит главную страницу с формой добавления URL."""
     return render_template("index.html")
 
 
 @app.get("/urls")
 def urls_index():
+    """Показывает список всех URL с датой и кодом последней проверки."""
     app.logger.info("Запрашиваем список URL-адресов")
     urls = db.fetch_urls()
     return render_template("urls/index.html", urls=urls)
@@ -38,6 +40,7 @@ def urls_index():
 
 @app.get("/urls/<int:url_id>")
 def url_show(url_id: int):
+    """Отображает карточку URL и историю проверок."""
     app.logger.info("Открываем страницу URL id=%s", url_id)
     url = db.find_url_by_id(url_id)
 
@@ -51,6 +54,7 @@ def url_show(url_id: int):
 
 @app.post("/urls")
 def urls_create():
+    """Обрабатывает создание нового URL."""
     raw_url = request.form.get("url", "").strip()
     app.logger.info("Получен ввод URL='%s'", raw_url)
 
@@ -90,6 +94,7 @@ def urls_create():
 
 @app.post("/urls/<int:url_id>/checks")
 def url_checks_create(url_id: int):
+    """Запускает проверку конкретного URL."""
     app.logger.info("Создаём проверку для URL id=%s", url_id)
     url = db.find_url_by_id(url_id) # данные ссылки вида {"value": "value"}
 

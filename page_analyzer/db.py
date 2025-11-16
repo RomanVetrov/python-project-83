@@ -12,6 +12,7 @@ logger = logging.getLogger(__name__)
 
 @contextmanager
 def get_connection():
+    """Контекстный менеджер, который открывает и автоматически закрывает соединение с БД."""
     database_url = os.getenv("DATABASE_URL")
     if not database_url:
         raise RuntimeError("DATABASE_URL is not configured")
@@ -26,6 +27,11 @@ def get_connection():
 
 
 def fetch_urls():
+    """Возвращает список URL-адресов с датой и кодом последней проверки.
+
+    Использую DISTINCT ON с сортировкой по url_checks.id, чтобы Postgres
+    за один проход по данным выбрал последнюю проверку для каждого URL без
+    дополнительных подзапросов."""
     logger.info("Выполняем запрос списка URL-адресов")
     with get_connection() as conn:
         with conn.cursor(cursor_factory=DictCursor) as cursor:
@@ -45,7 +51,8 @@ def fetch_urls():
             return cursor.fetchall()
 
 
-def find_url_by_id(url_id: int):
+def find_url_by_id(url_id: int) -> DictCursor | None:
+    """Возвращает URL по идентификатору или None."""
     logger.info("Ищем URL по id=%s", url_id)
     with get_connection() as conn:
         with conn.cursor(cursor_factory=DictCursor) as cursor:
@@ -60,7 +67,8 @@ def find_url_by_id(url_id: int):
             return cursor.fetchone()
 
 
-def find_url_by_name(name: str):
+def find_url_by_name(name: str) -> DictCursor | None:
+    """Возвращает URL по имени или None."""
     logger.info("Ищем URL по имени=%s", name)
     with get_connection() as conn:
         with conn.cursor(cursor_factory=DictCursor) as cursor:
@@ -76,6 +84,7 @@ def find_url_by_name(name: str):
 
 
 def create_url(name: str) -> int:
+    """Создаёт новую запись URL и возвращает её идентификатор."""
     logger.info("Создаём новую запись URL name=%s", name)
     with get_connection() as conn:
         with conn.cursor() as cursor:
@@ -93,6 +102,7 @@ def create_url(name: str) -> int:
 
 
 def create_check(url_id: int, status_code: int) -> int:
+    """Сохраняет результат проверки и возвращает идентификатор проверки."""
     logger.info("Создаём проверку для url_id=%s", url_id)
     with get_connection() as conn:
         with conn.cursor() as cursor:
@@ -109,7 +119,8 @@ def create_check(url_id: int, status_code: int) -> int:
             return check_id
 
 
-def fetch_checks(url_id: int):
+def fetch_checks(url_id: int) -> list[DictCursor]:
+    """Возвращает список проверок для указанного URL."""
     logger.info("Получаем список проверок для url_id=%s", url_id)
     with get_connection() as conn:
         with conn.cursor(cursor_factory=DictCursor) as cursor:

@@ -4,7 +4,7 @@ from urllib.parse import urlparse
 
 
 def normalize_url(raw_url: str) -> str | None:
-    """Normalizes URL keeping only scheme and domain."""
+    """Нормализует URL, оставляя только схему и домен."""
     try:
         parsed = urlparse(raw_url)
 
@@ -14,4 +14,3 @@ def normalize_url(raw_url: str) -> str | None:
         return f"{parsed.scheme}://{parsed.netloc}"
     except Exception:
         return None
-

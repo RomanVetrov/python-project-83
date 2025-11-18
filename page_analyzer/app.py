@@ -60,22 +60,22 @@ def urls_create():
 
     if not raw_url:
         flash("Некорректный URL", "danger")
-        return redirect(url_for("index"))
+        return render_template("index.html"), 422
 
     normalized = normalize_url(raw_url)
     app.logger.info("Результат нормализации='%s'", normalized)
 
     if not normalized:
         flash("Некорректный URL", "danger")
-        return redirect(url_for("index"))
+        return render_template("index.html"), 422
 
     if not is_valid_url(normalized):
         flash("Некорректный URL", "danger")
-        return redirect(url_for("index"))
+        return render_template("index.html"), 422
 
     if len(normalized) > 255:
         flash("URL превышает 255 символов", "danger")
-        return redirect(url_for("index"))
+        return render_template("index.html"), 422
 
     existing = db.find_url_by_name(normalized)
 
@@ -134,5 +134,5 @@ def url_checks_create(url_id: int):
         flash("Не удалось сохранить проверку", "danger")
         return redirect(url_for("url_show", url_id=url_id))
 
-    flash("Проверка успешно добавлена", "success")
+    flash("Страница успешно проверена", "success")
     return redirect(url_for("url_show", url_id=url_id))

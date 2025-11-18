@@ -35,33 +35,33 @@
     </a>
   </form>
 
-  {% if checks %}
-    <h2 class="h4 mb-3">История проверок</h2>
-    <table class="table table-striped" data-test="checks">
-      <thead>
+  <h2 class="h4 mb-3">История проверок</h2>
+  <table class="table table-striped" data-test="checks">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Статус</th>
+        <th scope="col">h1</th>
+        <th scope="col">title</th>
+        <th scope="col">description</th>
+        <th scope="col">Дата</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for check in checks %}
         <tr>
-          <th scope="col">ID</th>
-          <th scope="col">Статус</th>
-          <th scope="col">h1</th>
-          <th scope="col">title</th>
-          <th scope="col">description</th>
-          <th scope="col">Дата</th>
+          <td>{{ check.id }}</td>
+          <td>{{ check.status_code or "—" }}</td>
+          <td>{{ check.h1 or "—" }}</td>
+          <td>{{ check.title or "—" }}</td>
+          <td>{{ check.description or "—" }}</td>
+          <td>{{ check.created_at.strftime("%Y-%m-%d %H:%M:%S") }}</td>
         </tr>
-      </thead>
-      <tbody>
-        {% for check in checks %}
-          <tr>
-            <td>{{ check.id }}</td>
-            <td>{{ check.status_code or "—" }}</td>
-            <td>{{ check.h1 or "—" }}</td>
-            <td>{{ check.title or "—" }}</td>
-            <td>{{ check.description or "—" }}</td>
-            <td>{{ check.created_at.strftime("%Y-%m-%d %H:%M:%S") }}</td>
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  {% else %}
-    <p class="text-muted">Проверок пока нет.</p>
-  {% endif %}
+      {% else %}
+        <tr>
+          <td colspan="6" class="text-muted text-center">Проверок пока нет.</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 {% endblock %}

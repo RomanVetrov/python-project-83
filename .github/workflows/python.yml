@@ -26,7 +26,7 @@ jobs:
         with:
           args: >
             -Dsonar.projectKey=RomanVetrov_python-project-83
-            -Dsonar.organization=RomanVetrov
+            -Dsonar.organization=romanvetrov
             -Dsonar.sources=.
             -Dsonar.python.version=3.12
             -Dsonar.exclusions=tests/**

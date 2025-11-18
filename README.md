@@ -3,7 +3,7 @@
 [![Actions Status](https://github.com/RomanVetrov/python-project-83/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/RomanVetrov/python-project-83/actions)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=RomanVetrov_python-project-83&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=RomanVetrov_python-project-83)
 
-Веб‑приложение, которое сохраняет пользовательские URL‑адреса, выполняет их проверки и отображает историю SEO‑метрик (HTTP‑статус, `<title>`, `<h1>`, `meta description`). Сделан как учебный проект и доведён до состояния, которым не стыдно делиться с работодателями.
+Веб‑приложение, которое сохраняет пользовательские URL‑адреса, выполняет их проверки и отображает историю SEO‑метрик (HTTP‑статус, `<title>`, `<h1>`, `meta description`).
 
 ## Основные возможности
 

@@ -12,5 +12,21 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: astral-sh/setup-uv@v1
       - run: uv sync
+      - name: Run lint
+        run: make lint
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@v2
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          args: >
+            -Dsonar.projectKey=RomanVetrov_python-project-83
+            -Dsonar.organization=RomanVetrov
+            -Dsonar.sources=.
+            -Dsonar.python.version=3.12
+            -Dsonar.exclusions=tests/**

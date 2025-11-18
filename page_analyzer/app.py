@@ -16,7 +16,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 from . import db  # noqa: E402
-from .services import normalize_url, is_valid_url  # noqa: E402
+from .services import normalize_url, is_valid_url, parse_seo_data  # noqa: E402
 
 logging.basicConfig(level=logging.INFO)
 
@@ -117,9 +117,16 @@ def url_checks_create(url_id: int):
         return redirect(url_for("url_show", url_id=url_id))
 
     status_code = response.status_code # достаем HTTP-Code ответа
+    seo_data = parse_seo_data(response.text)
 
     try:
-        db.create_check(url_id, status_code)
+        db.create_check(
+            url_id,
+            status_code,
+            h1=seo_data["h1"],
+            title=seo_data["title"],
+            description=seo_data["description"],
+        )
     except Exception:
         app.logger.exception(
             "Не удалось сохранить результат проверки URL id=%s", url_id

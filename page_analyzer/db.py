@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 @contextmanager
 def get_connection():
-    """Контекстный менеджер, который открывает и автоматически закрывает соединение с БД."""
+    """Контекстный менеджер, который открывает и закрывает соединение с БД."""
     database_url = os.getenv("DATABASE_URL")
     if not database_url:
         raise RuntimeError("DATABASE_URL is not configured")
@@ -101,18 +101,24 @@ def create_url(name: str) -> int:
             return new_id
 
 
-def create_check(url_id: int, status_code: int) -> int:
+def create_check(
+    url_id: int,
+    status_code: int,
+    h1: str | None = None,
+    title: str | None = None,
+    description: str | None = None,
+) -> int:
     """Сохраняет результат проверки и возвращает идентификатор проверки."""
     logger.info("Создаём проверку для url_id=%s", url_id)
     with get_connection() as conn:
         with conn.cursor() as cursor:
             cursor.execute(
                 """
-                INSERT INTO url_checks (url_id, status_code)
-                VALUES (%s, %s)
+                INSERT INTO url_checks (url_id, status_code, h1, title, description)
+                VALUES (%s, %s, %s, %s, %s)
                 RETURNING id
                 """,
-                (url_id, status_code),
+                (url_id, status_code, h1, title, description),
             )
             check_id = cursor.fetchone()[0]
             conn.commit()

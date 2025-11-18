@@ -3,24 +3,28 @@
 [![Actions Status](https://github.com/RomanVetrov/python-project-83/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/RomanVetrov/python-project-83/actions)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=RomanVetrov_python-project-83&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=RomanVetrov_python-project-83)
 
-Веб‑приложение, которое сохраняет пользовательские URL‑адреса, выполняет их проверки и отображает историю SEO‑метрик (HTTP‑статус, `<title>`, `<h1>`, `meta description`). Проект создавался по программе Hexlet, но аккуратно переупакован, чтобы им было не стыдно делиться с потенциальными работодателями.
+Веб‑приложение, которое сохраняет пользовательские URL‑адреса, выполняет их проверки и отображает историю SEO‑метрик (HTTP‑статус, `<title>`, `<h1>`, `meta description`). Сделан как учебный проект и доведён до состояния, которым не стыдно делиться с работодателями.
 
 ## Основные возможности
 
 - добавление сайтов с валидацией, нормализацией и защитой от дублей;
 - выполнение проверок и сохранение результатов в PostgreSQL;
 - отображение истории проверок и статуса каждого сайта;
-- flash‑сообщения и Bootstrap‑интерфейс, повторяющий демо Hexlet;
+- flash‑сообщения и аккуратный Bootstrap‑интерфейс;
 - логирование ключевых операций;
 - CI: GitHub Actions + SonarCloud (linters, покрытие, security hotspots).
 
 ## Технологический стек
 
-- Python 3.12, Flask 3, Gunicorn 23
-- PostgreSQL + psycopg2
-- Bootstrap 5
-- uv (управление зависимостями и виртуальной средой)
-- GitHub Actions, SonarCloud, Render.com
+![Python](https://img.shields.io/badge/Python-3776AB?logo=python&logoColor=white&style=flat-square)
+![Flask](https://img.shields.io/badge/Flask-000000?logo=flask&logoColor=white&style=flat-square)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?logo=postgresql&logoColor=white&style=flat-square)
+![Bootstrap](https://img.shields.io/badge/Bootstrap-7952B3?logo=bootstrap&logoColor=white&style=flat-square)
+![Gunicorn](https://img.shields.io/badge/Gunicorn-499848?logo=gunicorn&logoColor=white&style=flat-square)
+![Render](https://img.shields.io/badge/Render-1F1F1F?logo=render&logoColor=white&style=flat-square)
+![GitHub Actions](https://img.shields.io/badge/GitHub%20Actions-2088FF?logo=githubactions&logoColor=white&style=flat-square)
+![SonarCloud](https://img.shields.io/badge/SonarCloud-F3702A?logo=sonarcloud&logoColor=white&style=flat-square)
+![uv](https://img.shields.io/badge/uv-121212?logo=readthedocs&logoColor=white&style=flat-square)
 
 ## Требования
 

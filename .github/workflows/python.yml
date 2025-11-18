@@ -19,7 +19,7 @@ jobs:
       - name: Run lint
         run: make lint
       - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@5bf5fdf1b1fb96ef97d855b7368d334fe1f23a79
+        uses: SonarSource/sonarcloud-github-action@v2
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -24,10 +24,14 @@ app = Flask(__name__)
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
 
 
+INDEX_TEMPLATE = "index.html"
+INVALID_URL_MESSAGE = "Некорректный URL"
+
+
 @app.route("/", methods=["GET"])
 def index():
     """Выводит главную страницу с формой добавления URL."""
-    return render_template("index.html")
+    return render_template(INDEX_TEMPLATE)
 
 
 @app.get("/urls")
@@ -59,23 +63,23 @@ def urls_create():
     app.logger.info("Получен ввод URL='%s'", raw_url)
 
     if not raw_url:
-        flash("Некорректный URL", "danger")
-        return render_template("index.html"), 422
+        flash(INVALID_URL_MESSAGE, "danger")
+        return render_template(INDEX_TEMPLATE), 422
 
     normalized = normalize_url(raw_url)
     app.logger.info("Результат нормализации='%s'", normalized)
 
     if not normalized:
-        flash("Некорректный URL", "danger")
-        return render_template("index.html"), 422
+        flash(INVALID_URL_MESSAGE, "danger")
+        return render_template(INDEX_TEMPLATE), 422
 
     if not is_valid_url(normalized):
-        flash("Некорректный URL", "danger")
-        return render_template("index.html"), 422
+        flash(INVALID_URL_MESSAGE, "danger")
+        return render_template(INDEX_TEMPLATE), 422
 
     if len(normalized) > 255:
         flash("URL превышает 255 символов", "danger")
-        return render_template("index.html"), 422
+        return render_template(INDEX_TEMPLATE), 422
 
     existing = db.find_url_by_name(normalized)
 

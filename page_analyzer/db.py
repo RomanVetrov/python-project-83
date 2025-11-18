@@ -113,11 +113,12 @@ def create_check(
     with get_connection() as conn:
         with conn.cursor() as cursor:
             cursor.execute(
-                """
-                INSERT INTO url_checks (url_id, status_code, h1, title, description)
-                VALUES (%s, %s, %s, %s, %s)
-                RETURNING id
-                """,
+                (
+                    "INSERT INTO url_checks "
+                    "(url_id, status_code, h1, title, description) "
+                    "VALUES (%s, %s, %s, %s, %s) "
+                    "RETURNING id"
+                ),
                 (url_id, status_code, h1, title, description),
             )
             check_id = cursor.fetchone()[0]

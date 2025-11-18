@@ -100,23 +100,26 @@ def urls_create():
 def url_checks_create(url_id: int):
     """Запускает проверку конкретного URL."""
     app.logger.info("Создаём проверку для URL id=%s", url_id)
-    url = db.find_url_by_id(url_id) # данные ссылки вида {"value": "value"}
+    url = db.find_url_by_id(url_id)  # данные ссылки вида {"value": "value"}
 
     if url is None:
-        app.logger.warning("Нельзя создать проверку: URL не найден id=%s", url_id)
+        app.logger.warning(
+            "Нельзя создать проверку: URL не найден id=%s",
+            url_id,
+        )
         abort(404)
 
-    url_name = url["name"]# достал ссылку
+    url_name = url["name"]  # достал ссылку
 
     try:
-        response = requests.get(url_name)# достал объект Response
-        response.raise_for_status()# ловим 4хх-5хх ошибки
+        response = requests.get(url_name)  # достал объект Response
+        response.raise_for_status()  # ловим 4хх-5хх ошибки
     except requests.RequestException:
         app.logger.exception("Не удалось выполнить запрос к URL id=%s", url_id)
         flash("Произошла ошибка при проверке", "danger")
         return redirect(url_for("url_show", url_id=url_id))
 
-    status_code = response.status_code # достаем HTTP-Code ответа
+    status_code = response.status_code  # достаем HTTP-Code ответа
     seo_data = parse_seo_data(response.text)
 
     try:

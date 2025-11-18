@@ -38,5 +38,7 @@ def parse_seo_data(html: str) -> dict[str, str | None]:
     return {
         "h1": extract_text(h1),
         "title": extract_text(title),
-        "description": description.get("content", "").strip() if description else None,
+        "description": (
+            description.get("content", "").strip() if description else None
+        ),
     }

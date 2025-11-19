@@ -5,15 +5,6 @@
 
 Веб‑приложение, которое сохраняет пользовательские URL‑адреса, выполняет их проверки и отображает историю SEO‑метрик (HTTP‑статус, `<title>`, `<h1>`, `meta description`).
 
-## Основные возможности
-
-- добавление сайтов с валидацией, нормализацией и защитой от дублей;
-- выполнение проверок и сохранение результатов в PostgreSQL;
-- отображение истории проверок и статуса каждого сайта;
-- flash‑сообщения и аккуратный Bootstrap‑интерфейс;
-- логирование ключевых операций;
-- CI: GitHub Actions + SonarCloud (linters, покрытие, security hotspots).
-
 ## Технологический стек
 
 ![Python](https://img.shields.io/badge/Python-3776AB?logo=python&logoColor=white&style=flat-square)
@@ -25,6 +16,15 @@
 ![GitHub Actions](https://img.shields.io/badge/GitHub%20Actions-2088FF?logo=githubactions&logoColor=white&style=flat-square)
 ![SonarCloud](https://img.shields.io/badge/SonarCloud-F3702A?logo=sonarcloud&logoColor=white&style=flat-square)
 ![uv](https://img.shields.io/badge/uv-121212?logo=readthedocs&logoColor=white&style=flat-square)
+
+## Основные возможности
+
+- добавление сайтов с валидацией, нормализацией и защитой от дублей;
+- выполнение проверок и сохранение результатов в PostgreSQL;
+- отображение истории проверок и статуса каждого сайта;
+- flash‑сообщения и аккуратный Bootstrap‑интерфейс;
+- логирование ключевых операций;
+- CI: GitHub Actions + SonarCloud (linters, покрытие, security hotspots).
 
 ## Требования
 
@@ -40,7 +40,11 @@ cd python-project-83
 make install            # установка зависимостей через uv
 ```
 
-Создайте `.env` в корне:
+Скопируйте пример переменных окружения и отредактируйте его под себя:
+
+```bash
+cp .env.example .env
+```
 
 ```dotenv
 DATABASE_URL=postgresql://<user>:<password>@<host>:<port>/<db>
